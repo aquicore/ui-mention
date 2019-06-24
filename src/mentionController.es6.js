@@ -30,10 +30,11 @@ angular.module('ui.mention')
     ngModel = model;
 
     ngModel.$parsers.push( value => {
+      const regex = new RegExp(/[^\[\s](@[a-zA-Z0-9\.\-]+)/im);
       // Removes any mentions that aren't used
       this.mentions = this.mentions.filter( mention => {
        if (~value.indexOf(this.label(mention)))
-          return value = value.split(this.label(mention)).join(this.encode(mention));
+          return value = value.replace(regex, this.encode(mention));
       });
 
       this.render(value);
