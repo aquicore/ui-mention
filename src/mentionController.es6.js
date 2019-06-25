@@ -14,6 +14,7 @@ angular.module('ui.mention')
   this.$element = $element;
   this.choices = [];
   this.mentions = [];
+  this.customLabelRegex;
   var ngModel;
 
   /**
@@ -32,8 +33,14 @@ angular.module('ui.mention')
     ngModel.$parsers.push( value => {
       // Removes any mentions that aren't used
       this.mentions = this.mentions.filter( mention => {
-       if (~value.indexOf(this.label(mention)))
-          return value = value.split(this.label(mention)).join(this.encode(mention));
+        if (~value.indexOf(this.label(mention))) {
+          if (this.customLabelRegex) {
+              return value = value.replace(this.customLabelRegex, `$1${this.encode(mention)}`);
+          }
+          else {
+              return value = value.split(this.label(mention)).join(this.encode(mention));
+          }
+        }
       });
 
       this.render(value);
