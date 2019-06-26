@@ -33,6 +33,7 @@ angular.module('ui.mention').controller('uiMention', ["$element", "$scope", "$at
   this.$element = $element;
   this.choices = [];
   this.mentions = [];
+  this.customLabelRegex;
   var ngModel;
 
   /**
@@ -53,7 +54,13 @@ angular.module('ui.mention').controller('uiMention', ["$element", "$scope", "$at
     ngModel.$parsers.push(function (value) {
       // Removes any mentions that aren't used
       _this.mentions = _this.mentions.filter(function (mention) {
-        if (~value.indexOf(_this.label(mention))) return value = value.split(_this.label(mention)).join(_this.encode(mention));
+        if (~value.indexOf(_this.label(mention))) {
+          if (_this.customLabelRegex) {
+            return value = value.replace(_this.customLabelRegex, '$1' + _this.encode(mention));
+          } else {
+            return value = value.split(_this.label(mention)).join(_this.encode(mention));
+          }
+        }
       });
 
       _this.render(value);
