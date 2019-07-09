@@ -1,6 +1,6 @@
 {
   "name": "@aquicore/angular-ui-mention",
-  "version": "0.0.91",
+  "version": "0.0.92",
   "description": "Facebook-like @mentions for text inputs built around composability",
   "main": "dist/mention.js",
   "scripts": {
